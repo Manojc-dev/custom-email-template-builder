@@ -1,0 +1,116 @@
+<div class="property-editor">
+  <ng-container *ngIf="selectedComponent$ | async as component; else noSelection">
+    <div class="editor-header">
+      <h3>Edit {{ component.type | titlecase }}</h3>
+      <button mat-icon-button (click)="deselectComponent()" matTooltip="Close editor">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="editor-form" [ngSwitch]="component.type">
+      <div *ngSwitchCase="'text'">
+        <mat-form-field appearance="outline">
+          <mat-label>Content</mat-label>
+          <textarea matInput cdkTextareaAutosize [value]="component.properties['content']"
+            (input)="updateProperty(component.id, 'content', $event)"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Font Size (px)</mat-label>
+          <input matInput type="number" [value]="component.properties['fontSize']"
+            (input)="updateProperty(component.id, 'fontSize', $event)" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Color</mat-label>
+          <input matInput type="color" [value]="component.properties['color']"
+            (input)="updateProperty(component.id, 'color', $event)" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Alignment</mat-label>
+            <mat-select [value]="component.properties['align']" 
+                        (selectionChange)="updateProperty(component.id, 'align', $event.value)">
+              <mat-option value="left">Left</mat-option>
+              <mat-option value="center">Center</mat-option>
+              <mat-option value="right">Right</mat-option>
+            </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div *ngSwitchCase="'image'">
+        <mat-form-field appearance="outline">
+          <mat-label>Image URL</mat-label>
+          <input matInput [value]="component.properties['src']"
+            (input)="updateProperty(component.id, 'src', $event)" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Alt Text</mat-label>
+          <input matInput [value]="component.properties['alt']"
+            (input)="updateProperty(component.id, 'alt', $event)" />
+        </mat-form-field>
+        <mat-label>Width (%)</mat-label>
+        <mat-slider min="10" max="100" step="5">
+          <input matSliderThumb [value]="component.properties['width']" 
+                 (valueChange)="updateProperty(component.id, 'width', $event)">
+        </mat-slider>
+      </div>
+
+      <div *ngSwitchCase="'button'">
+         <mat-form-field appearance="outline">
+            <mat-label>Button Text</mat-label>
+            <input matInput [value]="component.properties['text']" 
+                  (input)="updateProperty(component.id, 'text', $event)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Link URL</mat-label>
+            <input matInput [value]="component.properties['url']" 
+                  (input)="updateProperty(component.id, 'url', $event)">
+        </mat-form-field>
+         <mat-form-field appearance="outline">
+            <mat-label>Background Color</mat-label>
+            <input matInput type="color" [value]="component.properties['backgroundColor']" 
+                  (input)="updateProperty(component.id, 'backgroundColor', $event)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Text Color</mat-label>
+            <input matInput type="color" [value]="component.properties['textColor']" 
+                  (input)="updateProperty(component.id, 'textColor', $event)">
+        </mat-form-field>
+      </div>
+
+      <div *ngSwitchCase="'divider'">
+        <mat-form-field appearance="outline">
+            <mat-label>Thickness (px)</mat-label>
+            <input matInput type="number" [value]="component.properties['thickness']" 
+                  (input)="updateProperty(component.id, 'thickness', $event)">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Style</mat-label>
+            <mat-select [value]="component.properties['style']" 
+                        (selectionChange)="updateProperty(component.id, 'style', $event.value)">
+                <mat-option value="solid">Solid</mat-option>
+                <mat-option value="dashed">Dashed</mat-option>
+                <mat-option value="dotted">Dotted</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Color</mat-label>
+            <input matInput type="color" [value]="component.properties['color']" 
+                  (input)="updateProperty(component.id, 'color', $event)">
+        </mat-form-field>
+      </div>
+
+      <div *ngSwitchCase="'spacer'">
+        <mat-label>Height (px)</mat-label>
+        <mat-slider min="10" max="200" step="5" [(ngModel)]="component.properties['height']" [displayWith]="displayPx"
+          (change)="updateProperty(component.id, 'height', $event)"></mat-slider>
+      </div>
+
+    </div>
+  </ng-container>
+
+  <ng-template #noSelection>
+    <div class="editor-empty">
+      <mat-icon>touch_app</mat-icon>
+      <p>Select a block on the canvas to edit its properties.</p>
+    </div>
+  </ng-template>
+</div>
