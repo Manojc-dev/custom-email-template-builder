@@ -1,0 +1,23 @@
+<div class="palette-container">
+  <h2>Blocks</h2>
+  <div
+    cdkDropList
+    id="palette-list"
+    [cdkDropListData]="paletteItems"
+    [cdkDropListConnectedTo]="['canvas-list']"
+    class="palette-list"
+  >
+    <mat-list>
+      <mat-list-item *ngFor="let item of paletteItems" cdkDrag class="palette-item">
+        <div *cdkDragPreview class="palette-item-preview">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span>{{ item.name }}</span>
+        </div>
+        <div class="palette-item-content">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span>{{ item.name }}</span>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

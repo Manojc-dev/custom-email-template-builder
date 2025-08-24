@@ -1,0 +1,20 @@
+<div class="builder-layout">
+  <div class="builder-header">
+    <h1>Email Template Builder</h1>
+    <button mat-raised-button color="primary" (click)="exportHtml()">
+      <mat-icon>code</mat-icon>
+      Export HTML
+    </button>
+  </div>
+  <div class="builder-main">
+    <div class="builder-col palette-col">
+      <etb-component-palette></etb-component-palette>
+    </div>
+    <div class="builder-col canvas-col">
+      <etb-canvas></etb-canvas>
+    </div>
+    <div class="builder-col properties-col">
+      <etb-property-editor></etb-property-editor>
+    </div>
+  </div>
+</div>

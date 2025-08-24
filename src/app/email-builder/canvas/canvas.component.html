@@ -1,0 +1,69 @@
+<div class="canvas-wrapper">
+  <!-- Use 'as' to assign the async result to a template variable with a type assertion -->
+  <div
+    *ngIf="(components$ | async) as components"
+    cdkDropList
+    id="canvas-list"
+    class="canvas-list"
+    [cdkDropListData]="components"
+    (cdkDropListDropped)="onDrop($event)"
+  >
+    <div
+      *ngFor="let component of components$ | async"
+      cdkDrag
+      class="canvas-item"
+      [class.selected]="(selectedComponentId$ | async) === component.id"
+      (click)="selectComponent(component.id)"
+    >
+      <div class="canvas-item-placeholder" *cdkDragPlaceholder></div>
+
+      <ng-container [ngSwitch]="component.type">
+        <div *ngSwitchCase="'text'"
+          [style.font-size.px]="component.properties.fontSize"
+          [style.color]="component.properties.color"
+          [style.text-align]="component.properties.align"
+          class="component-preview text-preview"
+        >
+          {{ component.properties.content }}
+        </div>
+
+        <div *ngSwitchCase="'image'"
+          class="component-preview image-preview"
+          [style.text-align]="'center'"
+        >
+          <img [src]="component.properties.src" [alt]="component.properties.alt" [style.width.%]="component.properties.width" />
+        </div>
+
+        <div *ngSwitchCase="'button'"
+          class="component-preview button-preview"
+          [style.text-align]="'center'"
+        >
+          <a
+            [style.background-color]="component.properties.backgroundColor"
+            [style.color]="component.properties.textColor"
+            class="preview-button"
+            >{{ component.properties.text }}</a
+          >
+        </div>
+
+        <div *ngSwitchCase="'divider'" class="component-preview divider-preview">
+          <hr
+            [style.border-top-width.px]="component.properties.thickness"
+            [style.border-top-style]="component.properties.style"
+            [style.border-top-color]="component.properties.color"
+          />
+        </div>
+
+        <div *ngSwitchCase="'spacer'"
+          class="component-preview spacer-preview"
+          [style.height.px]="component.properties.height"
+        ></div>
+      </ng-container>
+    </div>
+
+    <div *ngIf="components$.length === 0" class="canvas-empty">
+      <mat-icon>add_to_photos</mat-icon>
+      <p>Drag blocks here to build your email</p>
+    </div>
+  </div>
+</div>
